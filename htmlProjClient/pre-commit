@@ -1,0 +1,12 @@
+#!/bin/bash
+
+allFiles=$(git diff-index --patch HEAD --name-only | grep ".html")
+
+while IFS= read -r file
+do
+	tidy $file
+	if [[ $? != 0 ]]; then
+		echo "HTML file not in correct format"
+		exit 1
+	fi
+done <<< ${allFiles}
